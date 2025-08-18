@@ -1,14 +1,15 @@
+# db/model/session.py
+
 import uuid
 from sqlalchemy import Column, String, Text, DateTime, JSON
-from sqlalchemy.dialects.postgresql import UUID, INET
+from sqlalchemy.types import UUID # Use the generic UUID type
 from sqlalchemy.sql import func
 from db.base import Base
 
 class Session(Base):
     __tablename__ = "sessions"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    # user_id can be added later
-    ip_address = Column(INET, nullable=True)
+    ip_address = Column(String(45), nullable=True) 
     user_agent = Column(Text, nullable=True)
     
     # Marketing Attribution
