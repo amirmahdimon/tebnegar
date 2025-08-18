@@ -1,0 +1,21 @@
+import uuid
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from dependency.dependencies import get_db
+from schema.feedback import FeedbackCreate, FeedbackResponse
+from repository import feedback
+
+router = APIRouter()
+
+@router.post("/{message_id}", response_model=FeedbackResponse)
+def submit_feedback(
+    message_id: uuid.UUID,
+    feedback_in: FeedbackCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    Submit feedback for a specific AI-generated message.
+    """
+    # You might want to add a check here to ensure the message_id corresponds to an AI message
+    feedback.create_with_message_id(db=db, message_id=message_id, obj_in=feedback_in)
+    return FeedbackResponse()
