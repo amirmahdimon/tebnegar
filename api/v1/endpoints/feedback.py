@@ -1,5 +1,5 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from dependency.dependencies import get_db
 from schema.feedback import FeedbackCreate, FeedbackResponse
