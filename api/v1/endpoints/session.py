@@ -28,7 +28,7 @@ def create_new_session(
 
 
 
-@router.patch("/{session_id}/end", status_code=204)
+@router.post("/{session_id}/end", status_code=204)
 def end_user_session(session_id: uuid.UUID, db: Session = Depends(get_db)):
     """
     Marks a session as ended.
