@@ -1,11 +1,13 @@
+# services/ai/base.py
+
 from abc import ABC, abstractmethod
 
 class AIProvider(ABC):
     """Abstract interface for all AI providers."""
 
     @abstractmethod
-    def start_session(self, system_instruction: str = ""):
-        """Create a new session (chat) with optional system instruction."""
+    def start_session(self):
+        """Create a new session (chat). The system instruction is handled at initialization."""
         pass
 
     @abstractmethod
