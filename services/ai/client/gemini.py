@@ -9,9 +9,6 @@ class GeminiClient(AIProvider):
         """
         genai.configure(api_key=SETTINGS.GEMINI_API_KEY,transport="rest") # type: ignore
         
-        # The model is now initialized with the system instruction directly.
-        # This is the correct way to set the AI's persona.
-        # I've also updated the model to gemini-1.5-pro, which is highly recommended for this kind of chat application.
         self.model = genai.GenerativeModel("gemini-2.5-pro",system_instruction=system_instruction) # type: ignore
 
     def start_session(self):
@@ -29,7 +26,7 @@ class GeminiClient(AIProvider):
             response = session.send_message(message)
             return response.text
         except Exception as e:
-            # Add logging here in a real application
+            # Logging
             print(f"Error during Gemini API call: {e}")
             # Return a safe, generic error message to the user
-            return "I'm sorry, but I encountered an error and can't continue this conversation. Please try again."
+            return "I'm sorry, but I encountered an error and can't continue this conversation. Please try again later."
