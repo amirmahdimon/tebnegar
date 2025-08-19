@@ -21,4 +21,4 @@ class Message(Base):
     
     conversation = relationship("Conversation", back_populates="messages")
     ai_analysis = relationship("AIAnalysis", back_populates="message", uselist=False, cascade="all, delete-orphan")
-    feedback = relationship("Feedback", back_populates="message", uselist=False, cascade="all, delete-orphan")
+    feedback = relationship("ResponseFeedback", back_populates="message", uselist=False, cascade="all, delete-orphan")
