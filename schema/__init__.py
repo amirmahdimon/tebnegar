@@ -1,5 +1,5 @@
 from . import survey
-from . import feedback
+from . import response_feedback
 from . import symptom
 from . import conversation
 from . import message
