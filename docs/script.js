@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 2. CONFIGURATION ---
     const CONFIG = {
-        apiBaseUrl: "https://tebnegar.onrender.com//api/v1",
+        apiBaseUrl: "https://tebnegar.onrender.com/api/v1",
         localStorageKey: "tebnegar_session_id_v2",
     };
 
