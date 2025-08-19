@@ -18,7 +18,6 @@ app.include_router(api_v1_router.router, prefix="/api/v1")
 
 
 # Setup CORS
-# TODO: Configure this before production buddy
 origins = [
     "https://0ne-zero.github.io",
 ]
