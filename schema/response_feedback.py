@@ -1,10 +1,10 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from db.model.response_feedback import FeedbackType
 
-class FeedbackCreate(BaseModel):
-    rating: int = Field(..., description="1 for good, -1 for bad")
-    would_pay: Optional[bool] = None
+class ResponseFeedbackCreate(BaseModel):
+    feedback_type: FeedbackType
     comment: Optional[str] = Field(None, max_length=2000)
 
-class FeedbackResponse(BaseModel):
+class ResponseFeedbackResponse(BaseModel):
     message: str = "Feedback received. Thank you!"
