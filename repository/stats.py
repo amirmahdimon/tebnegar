@@ -5,7 +5,7 @@ from db.model.session import Session as SessionModel
 from db.model.conversation import Conversation as ConversationModel
 from db.model.message import Message as MessageModel
 from db.model.feedback import Feedback as FeedbackModel
-from schema.admin import StatsResponse
+from schema.admin.stats import StatsResponse
 
 class CRUDStats:
     """
