@@ -41,7 +41,7 @@ class CRUDSession(CRUDBase[SessionModel, SessionCreate, Dict[str, Any]]): # type
             Tuple[SessionModel, ConversationModel]: The newly created session and conversation.
         """
         # Use the provided Pydantic schema to create a dictionary of the object's data
-        session_data = obj_in.dict(exclude_unset=True)
+        session_data = obj_in.model_dump(exclude_unset=True)
         
         # Create the SessionModel instance, adding the extracted request data
         new_session = self.model(

@@ -12,7 +12,7 @@ class CRUDFfeedback(CRUDBase[Feedback, FeedbackCreate, FeedbackCreate]):
         """
         Creates a feedback record linked to a specific message.
         """
-        db_obj = self.model(message_id=message_id, **obj_in.dict())
+        db_obj = self.model(message_id=message_id, **obj_in.model_dump())
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)

@@ -70,7 +70,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             update_data = obj_in
         else:
             # Use exclude_unset=True to only update fields that were provided
-            update_data = obj_in.dict(exclude_unset=True)
+            update_data = obj_in.model_dump(exclude_unset=True)
         
         for field in obj_data:
             if field in update_data:
