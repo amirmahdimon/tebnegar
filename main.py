@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.v1.api_v1_router import api_v1_router
+from api.v1 import api_v1_router
 from db.base import Base
 from db.session import engine
 
@@ -12,12 +12,12 @@ app = FastAPI(
     version="0.0.1"
 )
 
-app.include_router(api_v1_router, prefix="/api/v1")
+app.include_router(api_v1_router.router, prefix="/api/v1")
 
 
 @app.get("/", tags=["Root"])
 def read_root():
-    return {"message": "Welcome to the TebNegar MVP API"}
+    return {"message": f"Welcome to the TebNegar MVP API v{app.version}"}
 
 
 import uvicorn
