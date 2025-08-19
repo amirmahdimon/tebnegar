@@ -13,7 +13,7 @@ class MessageInDB(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AIResponseMessage(MessageInDB):
     # The frontend needs the message_id to submit feedback

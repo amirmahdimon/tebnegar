@@ -47,7 +47,7 @@ class ConversationHistory(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ConversationInDB(BaseModel):
@@ -62,4 +62,4 @@ class ConversationInDB(BaseModel):
     messages: List[MessageInDB] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

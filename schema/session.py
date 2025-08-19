@@ -16,7 +16,7 @@ class SessionInDB(BaseModel):
     id: uuid.UUID
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class NewSessionResponse(BaseModel):
     session_id: uuid.UUID
