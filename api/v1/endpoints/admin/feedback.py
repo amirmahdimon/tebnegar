@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from dependency.dependencies import get_db
-from schema.admin import FeedbackAdminView
+from schema.admin.feedback import FeedbackAdminView
 from repository import feedback
 
 router = APIRouter()
