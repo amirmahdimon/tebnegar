@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     ADMIN_API_KEY: str
     HTTP_PROXY: str | None = None
     HTTPS_PROXY: str | None = None
+    DEVELOPMENT: bool
 
     class Config:
         env_file = ".env"

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from config.settings import SETTINGS
 from db.base import Base
 from db.session import engine
 from api.v1 import api_v1_router
@@ -19,9 +20,11 @@ app.include_router(api_v1_router.router, prefix="/api/v1")
 # Setup CORS
 # TODO: Configure this before production buddy
 origins = [
-    "http://127.0.0.1:5500",
-    "null"
+    "https://0ne-zero.github.io",
 ]
+
+if SETTINGS.DEVELOPMENT:
+    origins.append("null")
 
 app.add_middleware(
     CORSMiddleware,
