@@ -5,7 +5,7 @@ from services.ai.base import AIProvider
 class GeminiClient(AIProvider):
     def __init__(self):
         # Set transport to rest to use HTTP_PROXY variable to prevent 403
-        genai.configure(api_key=SETTINGS.GOOGLE_API_KEY, transport="rest") # type: ignore
+        genai.configure(api_key=SETTINGS.GEMINI_API_KEY, transport="rest") # type: ignore
         self.model = genai.GenerativeModel('gemini-2.5-pro') # type: ignore
 
     def get_assessment(self, symptoms: str) -> str:
