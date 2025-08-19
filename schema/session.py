@@ -1,10 +1,10 @@
 import uuid
-from pydantic import BaseModel, HttpUrl, Field
-from typing import Optional, Dict, Any
+from pydantic import BaseModel, HttpUrl
+from typing import Optional, Dict, Any, Union
 
 class SessionCreate(BaseModel):
-    landing_page_url: Optional[HttpUrl] = None
-    referrer_url: Optional[HttpUrl] = None
+    landing_page_url: Optional[Union[HttpUrl, str]] = None
+    referrer_url: Optional[Union[HttpUrl, str]] = None
     utm_source: Optional[str] = None
     utm_medium: Optional[str] = None
     utm_campaign: Optional[str] = None
