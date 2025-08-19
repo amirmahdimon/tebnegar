@@ -6,17 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TebNegar - AI Assistant</title>
 
-    <!-- Dependencies -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- SECURITY: DOMPurify is essential for sanitizing HTML output and preventing XSS -->
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
-
-    <!-- Custom Styles & Configuration -->
-    <link rel="stylesheet" href="style.css">
     <script>
-        // Centralized Tailwind configuration for a consistent design system
+        // Tailwind centralized configuration
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -31,21 +24,43 @@
                     }
                 }
             }
-        }
+        };
     </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Third-party CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JavaScript Libraries -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autosize@4.x.x/dist/autosize.min.js"></script>
 </head>
 
 <body class="bg-main-dark text-gray-200 font-sans antialiased">
-    <div class="flex h-screen">
+    <div id="app-container" class="flex h-screen">
         <!-- Sidebar -->
         <aside class="bg-sidebar-dark w-64 p-4 space-y-4 hidden md:flex flex-col flex-shrink-0">
             <div>
                 <h1 class="text-2xl font-bold text-white">TebNegar</h1>
                 <p class="text-sm text-gray-400">AI Symptom Assistant</p>
             </div>
-            <button id="new-chat-btn" aria-label="Start a new chat" class="w-full flex items-center justify-center p-2 rounded-lg border border-border-dark text-gray-300 hover:bg-ai-bubble focus-visible:outline-accent-blue transition-colors duration-200">
+
+            <button id="new-chat-btn" type="button" aria-label="Start a new chat"
+                class="w-full flex items-center justify-center p-2 rounded-lg border border-border-dark text-gray-300 hover:bg-ai-bubble focus-visible:outline-accent-blue transition-colors duration-200">
                 <i class="fa-solid fa-plus mr-2"></i> New Chat
             </button>
+
             <div id="history-container" class="flex-grow overflow-y-auto pr-2">
                 <!-- Chat history dynamically injected -->
             </div>
@@ -54,32 +69,32 @@
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col bg-main-dark">
             <!-- Chat Messages Window -->
-            <div id="chat-window" class="flex-1 p-4 md:p-6 overflow-y-auto">
-                <!-- Initial Welcome Message injected by JS -->
-            </div>
+            <div id="chat-window" class="flex-1 p-4 md:p-6 overflow-y-auto"></div>
 
             <!-- Fixed Input Area -->
             <div class="p-4 md:p-6 bg-main-dark border-t border-border-dark">
                 <div class="max-w-3xl mx-auto">
-                    <!-- Feedback Widget: appears after an AI response -->
+                    <!-- Feedback Widget -->
                     <div id="feedback-widget" class="hidden bg-ai-bubble p-4 rounded-t-2xl mb-2 transition-all">
                         <p class="text-sm font-semibold mb-2 text-center text-gray-300">How was this response?</p>
                         <form id="feedback-form" class="flex items-center justify-center space-x-4">
-                            <!-- ACCESSIBILITY: Using icons with clear aria-labels -->
-                            <button type="button" class="feedback-btn" data-rating="good" aria-label="Good response">
+                            <button type="button" class="feedback-btn" data-feedback="like" aria-label="Good response">
                                 <i class="fa-solid fa-thumbs-up"></i>
                             </button>
-                            <button type="button" class="feedback-btn" data-rating="bad" aria-label="Bad response">
+                            <button type="button" class="feedback-btn" data-feedback="dislike" aria-label="Bad response">
                                 <i class="fa-solid fa-thumbs-down"></i>
                             </button>
                         </form>
                     </div>
 
-                    <!-- ACCESSIBILITY: Added a screen-reader-only label for the textarea -->
                     <label for="message-input" class="sr-only">Enter your symptoms here</label>
                     <form id="chat-form" class="flex items-end space-x-3">
-                        <textarea id="message-input" class="flex-grow bg-ai-bubble p-3 rounded-2xl placeholder-gray-500 focus-visible:outline-accent-blue transition-shadow duration-200" placeholder="Describe your symptoms..." rows="1" aria-label="Chat input"></textarea>
-                        <button type="submit" id="send-button" class="bg-accent-blue text-white rounded-xl w-12 h-12 flex items-center justify-center flex-shrink-0 hover:bg-sky-500 transition-colors duration-200 disabled:bg-gray-600 disabled:cursor-not-allowed" aria-label="Send message" disabled>
+                        <textarea id="message-input"
+                            class="flex-grow bg-ai-bubble p-3 rounded-2xl placeholder-gray-500 focus-visible:outline-accent-blue transition-shadow duration-200"
+                            placeholder="Describe your symptoms..." rows="1" aria-label="Chat input"></textarea>
+                        <button type="button" id="send-button"
+                            class="bg-accent-blue text-white rounded-xl w-12 h-12 flex items-center justify-center flex-shrink-0 hover:bg-sky-500 transition-colors duration-200 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                            aria-label="Send message" disabled>
                             <i class="fa-solid fa-paper-plane text-xl"></i>
                         </button>
                     </form>
@@ -88,7 +103,8 @@
         </main>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js" defer></script>
 </body>
 
 </html>

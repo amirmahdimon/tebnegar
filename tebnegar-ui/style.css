@@ -4,22 +4,22 @@
 
 /* Improve default scrollbar aesthetics across browsers */
 * {
-    scrollbar-width: thin;
-    scrollbar-color: #30363D #161B22;
-    /* thumb-color track-color */
+  scrollbar-width: thin;
+  scrollbar-color: #30363d #161b22;
+  /* thumb-color track-color */
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #161B22;
+  background: #161b22;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #30363D;
-    border-radius: 20px;
+  background-color: #30363d;
+  border-radius: 20px;
 }
 
 /* ACCESSIBILITY: Use focus-visible to only show focus rings for keyboard users */
@@ -27,53 +27,230 @@ button:focus-visible,
 a:focus-visible,
 textarea:focus-visible,
 input:focus-visible {
-    outline: 2px solid #2F81F7;
-    /* accent-blue */
-    outline-offset: 2px;
+  outline: 2px solid #2f81f7;
+  /* accent-blue */
+  outline-offset: 2px;
 }
 
 /* Typing indicator animation */
 .typing-dot {
-    animation: bounce 1.4s infinite ease-in-out both;
+  animation: bounce 1.4s infinite ease-in-out both;
 }
 
 .typing-dot:nth-child(1) {
-    animation-delay: -0.32s;
+  animation-delay: -0.32s;
 }
 
 .typing-dot:nth-child(2) {
-    animation-delay: -0.16s;
+  animation-delay: -0.16s;
 }
 
 @keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
 
-    0%,
-    80%,
-    100% {
-        transform: scale(0);
-    }
-
-    40% {
-        transform: scale(1.0);
-    }
+  40% {
+    transform: scale(1);
+  }
 }
 
 /* Simple transition for feedback buttons */
 .feedback-btn {
-    color: #9ca3af;
-    /* gray-400 */
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
+  color: #9ca3af;
+  /* gray-400 */
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .feedback-btn:hover {
-    color: #e5e7eb;
-    /* gray-200 */
-    background-color: rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+  /* gray-200 */
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .feedback-btn.selected {
-    color: #2F81F7;
-    /* accent-blue */
+  color: #2f81f7;
+  /* accent-blue */
+}
+
+#loading-overlay {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #2f81f7;
+  /* accent-blue */
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- SweetAlert2 Custom Theming --- */
+.swal2-popup {
+  background-color: #21262d !important;
+  /* ai-bubble color */
+  color: #e5e7eb !important;
+  /* gray-200 */
+  border-radius: 1.5rem !important;
+  /* rounded-2xl */
+  border: 1px solid #30363d;
+  /* border-dark */
+}
+
+.swal2-title {
+  color: #ffffff !important;
+}
+
+.swal2-confirm {
+  background-color: #2f81f7 !important;
+  /* accent-blue */
+  border-radius: 0.5rem !important;
+}
+
+.swal2-cancel {
+  background-color: #4b5563 !important;
+  /* gray-600 */
+  border-radius: 0.5rem !important;
+}
+
+/* --- History Item Delete Button --- */
+.history-item-container {
+  position: relative;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  /* gray-500 */
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.history-item-container:hover .delete-btn {
+  opacity: 1;
+  /* Show on hover of the container */
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+  /* red-500 */
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* --- MODERN CHAT UI STYLES --- */
+
+/* 1. Overall Chat Layout */
+#chat-window {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 2. Message Bubbles */
+.message-wrapper {
+  display: flex;
+  animation: message-fade-in 0.5s ease-in-out;
+}
+
+.message-bubble {
+  max-width: 75%;
+  padding: 0.75rem 1.25rem;
+  border-radius: 20px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  font-size: 1rem;
+}
+
+/* 3. Role-Specific Bubble Styling */
+.ai-bubble {
+  background-color: #374151;
+  /* Dark Gray */
+  color: #f3f4f6;
+  border-top-left-radius: 6px;
+}
+
+.user-bubble {
+  background-color: #003b49;
+  /* A nice, friendly blue */
+  color: #ffffff;
+  border-top-right-radius: 6px;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+/* 4. Animation for message appearance */
+@keyframes message-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 5. Edit Button Styles */
+.edit-btn {
+  position: absolute;
+  right: 36px; /* Positioned to the left of the delete button */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280; /* gray-500 */
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.history-item-container:hover .edit-btn {
+  opacity: 1; /* Show on hover of the container */
+}
+
+.edit-btn:hover {
+  color: #3b82f6; /* A nice blue for editing */
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* 6. Conversation Title Edit Input */
+.title-edit-input {
+  width: 100%;
+  background-color: #21262d;
+  border: 1px solid #2f81f7;
+  border-radius: 6px;
+  padding: 4px 8px;
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  outline: none;
 }
