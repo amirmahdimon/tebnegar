@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, Request, HTTPException
+import uuid
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from dependency.dependencies import get_db
 from schema.session import SessionCreate, NewSessionResponse
@@ -24,3 +25,17 @@ def create_new_session(
     )
     
     return NewSessionResponse(session_id=my_session.id, conversation_id=conversation.id) # type: ignore
+
+
+
+@router.patch("/{session_id}/end", status_code=204)
+def end_user_session(session_id: uuid.UUID, db: Session = Depends(get_db)):
+    """
+    Marks a session as ended.
+    """
+    db_session = session.end_session(db=db, session_id=session_id)
+    if not db_session:
+        # We don't raise 404 here to keep the beacon request lightweight
+        # and prevent leaking info about which sessions exist.
+        pass
+    return None
