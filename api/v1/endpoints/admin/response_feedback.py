@@ -1,11 +1,8 @@
-# api/v1/endpoints/admin/feedback.py
-
 from typing import List, Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from dependency.dependencies import get_db
-# --- CHANGE HERE: Import new schemas, CRUD object, and model type ---
 from schema.admin.response_feedback import ResponseFeedbackAdminView
 from repository import response_feedback as response_feedback
 from db.model.response_feedback import FeedbackType

@@ -1,6 +1,13 @@
 from fastapi import APIRouter,Depends
+
+
 from .endpoints import session, conversation, message, response_feedback
-from .endpoints.admin import stats as admin_stats, response_feedback as admin_response_feedback, conversation as admin_conversations
+from .endpoints.admin import (
+    stats as admin_stats, 
+    response_feedback as admin_response_feedback,
+    conversation as admin_conversations,
+    backup as admin_backup
+)
 from dependency.dependencies import get_admin_api_key
 
 router = APIRouter()
@@ -20,6 +27,7 @@ router.include_router(response_feedback.router, prefix="/response-feedback", tag
 admin_router.include_router(admin_stats.router, prefix="/stats", tags=["Admin - Stats"])
 admin_router.include_router(admin_response_feedback.router, prefix="/response-feedback", tags=["Admin - Feedback"])
 admin_router.include_router(admin_conversations.router, prefix="/conversations", tags=["Admin - Conversations"])
+admin_router.include_router(admin_backup.router, prefix="/backup", tags=["Admin - Backup"])
 
 # Include the admin router under a protected path
 router.include_router(admin_router, prefix="/admin")
