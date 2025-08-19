@@ -26,9 +26,7 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
         db.refresh(db_obj)
         return db_obj
 
-    def get_by_session_id(
-        self, db: Session, *, session_id: uuid.UUID
-    ) -> List[Conversation]:
+    def get_by_session_id(self, db: Session, *, session_id: uuid.UUID) -> List[Conversation]:
         """
         Get all conversations for a specific session, ordered by most recent.
         """
@@ -36,6 +34,30 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
             db.query(self.model)
             .filter(Conversation.session_id == session_id)
             .order_by(Conversation.created_at.desc())
+            .all()
+        )
+
+
+    def search_by_content(self, db: Session, *, keyword: str, skip: int = 0, limit: int = 100 ) -> List[Conversation]:
+        """
+        Searches for conversations containing a message with the given keyword.
+        """
+        from db.model.message import Message
+        # This subquery finds conversation_ids that have a matching message
+        subquery = (
+            db.query(Message.conversation_id)
+            .filter(Message.content.ilike(f"%{keyword}%"))
+            .distinct()
+            .subquery()
+        )
+        
+        # The main query fetches the conversations based on the subquery results
+        return (
+            db.query(self.model)
+            .filter(Conversation.id.in_(subquery)) # type: ignore
+            .order_by(Conversation.created_at.desc())
+            .offset(skip)
+            .limit(limit)
             .all()
         )
 

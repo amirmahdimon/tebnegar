@@ -1,5 +1,5 @@
-# crud/crud_session.py
-
+import uuid
+from datetime import datetime, timezone
 from typing import Tuple, Optional, Dict, Any
 from sqlalchemy.orm import Session
 
@@ -65,6 +65,19 @@ class CRUDSession(CRUDBase[SessionModel, SessionCreate, Dict[str, Any]]): # type
         db.refresh(new_conversation)
         
         return new_session, new_conversation
+
+
+    def end_session(self, db: Session, *, session_id: uuid.UUID) -> Optional[SessionModel]:
+        """
+        Marks a session as ended by setting the ended_at timestamp.
+        """
+        db_obj = self.get(db=db, id=session_id)
+        if db_obj and not db_obj.ended_at: # type: ignore
+            db_obj.ended_at = datetime.now(timezone.utc) # type: ignore
+            db.add(db_obj)
+            db.commit()
+            db.refresh(db_obj)
+        return db_obj
 
 # Create a singleton instance of the CRUDSession class for the application to use
 session = CRUDSession(SessionModel)
