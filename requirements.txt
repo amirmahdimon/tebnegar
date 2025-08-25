@@ -5,3 +5,7 @@ pydantic
 pydantic-settings
 python-dotenv
 google-generativeai
+google-auth-oauthlib
+python-jose[cryptography]
+passlib[bcrypt]
+pydantic[email]
