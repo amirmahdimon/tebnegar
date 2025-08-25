@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends
 
 
-from .endpoints import session, conversation, message, response_feedback
+from .endpoints import session, conversation, message, response_feedback, auth
 from .endpoints.admin import (
     stats as admin_stats, 
     response_feedback as admin_response_feedback,
@@ -18,6 +18,7 @@ admin_router = APIRouter(
 )
 
 # Public API routes
+router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 router.include_router(session.router, prefix="/sessions", tags=["Sessions"])
 router.include_router(conversation.router, prefix="/conversations", tags=["Conversations"])
 router.include_router(message.router, prefix="/messages", tags=["Messages"])
