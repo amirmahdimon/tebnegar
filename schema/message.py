@@ -16,5 +16,4 @@ class MessageInDB(BaseModel):
         from_attributes = True
 
 class AIResponseMessage(MessageInDB):
-    # The frontend needs the message_id to submit feedback
-    pass
+    elapsed_time_ms: int

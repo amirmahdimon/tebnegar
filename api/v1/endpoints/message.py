@@ -52,4 +52,7 @@ def post_user_message(
         analysis_data=analysis_data
     )
 
+    response = AIResponseMessage(**ai_message)
+    response.elapsed_time_ms = analysis_data["processing_time_ms"]
+
     return ai_message
