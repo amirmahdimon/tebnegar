@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Google OAuth</title>
+</head>
+<body>
+  <h2>Signing you in...</h2>
+  <script>
+    async function handleCallback() {
+      // Extract ?code=... from URL
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+
+      if (!code) {
+        document.body.innerHTML = "<h3>Authorization code not found!</h3>";
+        return;
+      }
+
+      try {
+        // Send code to backend /callback
+        const response = await fetch("http://localhost:8000/callback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ code })
+        });
+
+        if (!response.ok) {
+          throw new Error("Backend rejected the token exchange");
+        }
+
+        const data = await response.json();
+
+        // Save access_token (⚠️ decide: localStorage vs HttpOnly cookies)
+        localStorage.setItem("access_token", data.access_token);
+
+        // Redirect to frontend home/dashboard
+        window.location.href = "/";
+      } catch (err) {
+        console.error("OAuth error:", err);
+        document.body.innerHTML = `<h3>Login failed: ${err.message}</h3>`;
+      }
+    }
+
+    handleCallback();
+  </script>
+</body>
+</html>
