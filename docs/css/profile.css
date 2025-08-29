@@ -1,0 +1,21 @@
+/* Profile page-specific extracted styles (kept identical) */
+
+.profile-tab {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-tab:hover {
+    background-color: rgba(39, 207, 167, 0.1);
+}
+
+.profile-tab.active {
+    background-color: rgba(39, 207, 167, 0.1);
+}
+
+/* Inputs, editor, etc inherit from global style.css */
+
+/* Ensure profile content is visible on standalone page */
+#profile-content {
+    display: block !important;
+}
