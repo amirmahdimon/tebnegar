@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#27CFA7">
+    <meta name="msapplication-navbutton-color" content="#27CFA7">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#27CFA7">
+    <title>TebNegar - داشبورد</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'medical-blue': { 50: '#eef4ff', 100: '#dde7ff', 200: '#b9cffd', 300: '#91b3fb', 400: '#5f90f7', 500: '#3D7FF9', 600: '#2f63d6', 700: '#244db1', 800: '#1e3f8f', 900: '#183571' },
+                        'medical-green': { 50: '#eafaf5', 100: '#d2f5ec', 200: '#a6ebd9', 300: '#7de0c7', 400: '#49d2b0', 500: '#27CFA7', 600: '#20b38f', 700: '#199579', 800: '#147861', 900: '#0f5d4c' }
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom Font - IRANSans -->
+    <style>
+        @font-face {
+            font-family: 'IRANSans';
+            src: url('ASSETS/IRANSansXFaNum-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
+    <!-- Global and Page-specific CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body class="bg-[#F5F7FB] dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-all duration-300">
+    <div id="app" class="min-h-screen flex">
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside id="sidebar-nav"
+            class="hidden lg:flex flex-col w-64 bg-gradient-to-b from-medical-green-400 to-medical-green-600 text-white fixed inset-y-0 right-0 z-50 h-screen shadow-2xl">
+            <!-- Brand -->
+            <div class="px-6 py-5 border-b border-medical-green-500/30 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm"><i
+                            class="fas fa-briefcase-medical text-white"></i></div>
+                    <div>
+                        <h1 class="text-xl font-bold">TebNegar</h1>
+                        <p class="text-xs text-white/80">پنل کاربری</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-3 overflow-y-auto">
+                <p class="px-3 py-2 text-xs text-white/60 font-medium">منو</p>
+                <a href="Dashboard.html"
+                    class="sidebar-nav-item active flex items-center gap-3 px-4 py-3 rounded-xl bg-white/20 text-white hover:bg-white/30 hover:scale-105 hover:shadow-lg transition-all duration-300 transform"><i
+                        class="fas fa-home text-lg"></i><span>داشبورد</span></a>
+                <a href="Assistant.html"
+                    class="sidebar-nav-item mt-2 flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:bg-white/20 hover:scale-105 hover:shadow-lg transition-all duration-300 transform"><i
+                        class="fas fa-robot text-lg"></i><span>دستیار هوشمند</span></a>
+                <a href="#files"
+                    class="sidebar-nav-item mt-2 flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:bg-white/20 hover:scale-105 hover:shadow-lg transition-all duration-300 transform"><i
+                        class="fas fa-file-medical text-lg"></i><span>پرونده‌ها</span></a>
+                <a href="#statistics"
+                    class="sidebar-nav-item mt-2 flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:bg-white/20 hover:scale-105 hover:shadow-lg transition-all duration-300 transform"><i
+                        class="fas fa-chart-bar text-lg"></i><span>آمار و گزارش</span></a>
+                <a href="Profile.html"
+                    class="sidebar-nav-item mt-2 flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:bg-white/20 hover:scale-105 hover:shadow-lg transition-all duration-300 transform"><i
+                        class="fas fa-user text-lg"></i><span>پروفایل</span></a>
+                <a href="#goals"
+                    class="sidebar-nav-item mt-2 flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:bg-white/20 hover:scale-105 hover:shadow-lg transition-all duration-300 transform"><i
+                        class="fas fa-bullseye text-lg"></i><span>اهداف سلامت</span></a>
+            </nav>
+            <!-- Bottom Section -->
+            <div class="p-4 border-t border-medical-green-500/30 flex-shrink-0">
+                <button id="theme-toggle"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/20 hover:bg-white/30 hover:scale-105 transition-all duration-300 transform"><i
+                        class="fas fa-moon dark:hidden text-lg"></i><i
+                        class="fas fa-sun hidden dark:block text-lg"></i><span>تغییر تم</span></button>
+                <button
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/20 hover:bg-white/30 hover:scale-105 transition-all duration-300 transform mt-2"><i
+                        class="fas fa-sign-out-alt text-lg"></i><span>خروج</span></button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-h-screen w-full">
+            <!-- Mobile Header (Top) -->
+            <header id="mobile-header"
+                class="lg:hidden bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 w-full flex-shrink-0">
+                <div class="flex items-center justify-between px-4 py-2">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-7 h-7 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cross text-white text-xs"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-bold text-gray-900 dark:text-white">TebNegar</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="mobile-menu-toggle"
+                            class="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"><i
+                                class="fas fa-bars text-sm"></i></button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Desktop Header (Topbar) -->
+            <header
+                class="hidden lg:block bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 w-full">
+                <div class="container mx-auto px-6">
+                    <div class="flex items-center justify-between py-4">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-lg font-bold">داشبورد</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="hidden xl:flex items-center bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-2 w-96">
+                                <i class="fas fa-search text-gray-400 ml-2"></i><input type="text"
+                                    placeholder="کلید واژه جستجو کنید..."
+                                    class="bg-transparent flex-1 outline-none text-sm placeholder-gray-400">
+                            </div>
+                            <button class="icon-btn"><i class="fas fa-bell"></i></button>
+                            <button class="icon-btn"><i class="fas fa-comment-dots"></i></button>
+                            <div class="relative">
+                                <button id="profile-button" class="flex items-center gap-2"><img
+                                        src="https://i.pravatar.cc/40?img=13" class="w-9 h-9 rounded-full" alt="user" />
+                                    <div class="text-right">
+                                        <div class="text-sm font-semibold">کاربر نمونه</div>
+                                        <div class="text-xs text-gray-500">مدیر ارشد</div>
+                                    </div><i class="fas fa-chevron-down text-xs mr-1"></i>
+                                </button>
+                                <div id="profile-menu"
+                                    class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden">
+                                    <a href="Profile.html"
+                                        class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700">پروفایل</a>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700">تنظیمات</a>
+                                    <div class="border-t border-gray-200 dark:border-gray-700"></div>
+                                    <a href="#"
+                                        class="block px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-gray-700">خروج</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Area -->
+            <div class="flex-1 overflow-y-auto">
+                <!-- Homepage Content (copied exactly) -->
+                <div id="homepage-content">
+                    <!-- User Dashboard Header -->
+                    <section id="dashboard-header" class="py-6 lg:py-10">
+                        <div class="container mx-auto px-4">
+                            <div
+                                class="relative overflow-hidden rounded-3xl bg-gradient-to-tr from-medical-blue-50 to-medical-green-50 dark:from-slate-800 dark:to-slate-800 border border-gray-100 dark:border-gray-700">
+                                <div
+                                    class="absolute -left-20 -bottom-20 w-72 h-72 rounded-full bg-medical-blue-200/40 dark:bg-white/5 blur-2xl">
+                                </div>
+                                <div
+                                    class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-medical-green-200/40 dark:bg-white/5 blur-2xl">
+                                </div>
+                                <div class="relative grid grid-cols-1 lg:grid-cols-12 items-center">
+                                    <div class="lg:col-span-7 px-6 py-10">
+                                        <div class="flex items-center gap-4 mb-4">
+                                            <img src="https://i.pravatar.cc/60?img=13"
+                                                class="w-16 h-16 rounded-full border-4 border-white/50 shadow-lg"
+                                                alt="احمد" />
+                                            <h2 class="text-3xl lg:text-4xl font-black tracking-tight">سلام احمد 👋</h2>
+                                        </div>
+                                        <p class="text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-6">برای مراقبت
+                                            بهتر از
+                                            سلامت، از گفتگوی پزشکی شروع کنید یا پرونده خود را ببینید.</p>
+                                        <div class="flex flex-wrap gap-3">
+                                            <a href="ai-assistant.html"
+                                                class="md3-btn md3-primary inline-flex items-center gap-2 px-5 py-3 rounded-xl">
+                                                <i class="fas fa-robot"></i>
+                                                شروع گفتگوی پزشکی
+                                            </a>
+                                            <a href="#"
+                                                class="md3-btn inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200">
+                                                <i class="fas fa-file-medical"></i>
+                                                مشاهده پرونده
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="lg:col-span-5 px-6 py-8 lg:py-10">
+                                        <div
+                                            class="w-full h-56 lg:h-64 rounded-2xl bg-white/60 dark:bg-gray-900/30 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                                            <i class="fas fa-heartbeat text-medical-blue-500 text-5xl"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Progress + AI Recommendations Row -->
+                    <section id="platform-stats" class="py-4">
+                        <div class="container mx-auto px-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Progress Card -->
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <div
+                                        class="border-b border-gray-100 dark:border-gray-700 px-5 py-4 flex items-center justify-between">
+                                        <h5 class="font-semibold">پیشرفت خدمات</h5>
+                                    </div>
+                                    <div class="p-5">
+                                        <span class="block text-center text-gray-500 dark:text-gray-400 mb-2">فعالیت
+                                            کل</span>
+                                        <div class="text-4xl font-bold text-center mb-3">۶۵.۲٪</div>
+                                        <div class="flex gap-4">
+                                            <div class="flex-1">
+                                                <div
+                                                    class="w-full bg-medical-blue-100 dark:bg-slate-700 rounded-full h-1.5">
+                                                    <div class="bg-medical-blue-500 h-1.5 rounded-full"
+                                                        style="width:32%"></div>
+                                                </div>
+                                                <div class="text-xs mt-1 text-gray-500 dark:text-gray-400">پرونده‌های در
+                                                    حال
+                                                    بررسی ۳۲٪</div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div
+                                                    class="w-full bg-medical-green-100 dark:bg-slate-700 rounded-full h-1.5">
+                                                    <div class="bg-medical-green-500 h-1.5 rounded-full"
+                                                        style="width:80%">
+                                                    </div>
+                                                </div>
+                                                <div class="text-xs mt-1 text-gray-500 dark:text-gray-400">پیگیری‌ها ۸۰٪
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-5 space-y-3">
+                                            <div
+                                                class="flex items-center justify-between bg-medical-blue-50 dark:bg-slate-700/50 rounded-xl px-3 py-2">
+                                                <div class="flex items-center gap-3">
+                                                    <span
+                                                        class="w-8 h-8 rounded-lg bg-medical-blue-500 text-white flex items-center justify-center"><i
+                                                            class="fas fa-calendar-day text-sm"></i></span>
+                                                    <span
+                                                        class="font-semibold text-medical-blue-600 dark:text-medical-blue-400">۲۵</span>
+                                                </div>
+                                                <span
+                                                    class="text-xs px-2 py-1 rounded-full bg-white dark:bg-transparent border border-medical-blue-500 text-medical-blue-600">در
+                                                    حال انجام</span>
+                                            </div>
+                                            <div
+                                                class="flex items-center justify-between bg-green-50 dark:bg-slate-700/50 rounded-xl px-3 py-2">
+                                                <div class="flex items-center gap-3">
+                                                    <span
+                                                        class="w-8 h-8 rounded-lg bg-green-500 text-white flex items-center justify-center"><i
+                                                            class="fas fa-calendar-check text-sm"></i></span>
+                                                    <span class="font-semibold text-green-600">۱۲</span>
+                                                </div>
+                                                <span
+                                                    class="text-xs px-2 py-1 rounded-full bg-white dark:bg-transparent border border-green-500 text-green-600">تکمیل‌شده</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Recommendations Card -->
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <div class="border-b border-gray-100 dark:border-gray-700 px-5 py-4">
+                                        <h5 class="font-semibold flex items-center gap-2">
+                                            <i class="fas fa-brain text-medical-blue-500"></i>
+                                            پیشنهادهای هوش مصنوعی برای بهبود سبک زندگی
+                                        </h5>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                                            <!-- AI Analysis Chart -->
+                                            <div class="flex items-center justify-center">
+                                                <div class="relative">
+                                                    <svg viewBox="0 0 36 36" class="w-40 h-40">
+                                                        <defs>
+                                                            <linearGradient id="aiBlueGrad" x1="0" x2="1">
+                                                                <stop offset="0%" stop-color="#3D7FF9" />
+                                                                <stop offset="100%" stop-color="#5f90f7" />
+                                                            </linearGradient>
+                                                            <linearGradient id="aiGreenGrad" x1="0" x2="1">
+                                                                <stop offset="0%" stop-color="#27CFA7" />
+                                                                <stop offset="100%" stop-color="#49d2b0" />
+                                                            </linearGradient>
+                                                            <linearGradient id="aiPurpleGrad" x1="0" x2="1">
+                                                                <stop offset="0%" stop-color="#8B5CF6" />
+                                                                <stop offset="100%" stop-color="#A78BFA" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <!-- Background Circle -->
+                                                        <path d="M18 2 a16 16 0 1 1 0 32 a16 16 0 1 1 0 -32" fill="none"
+                                                            stroke="#f3f4f6" stroke-width="2.5" />
+                                                        <!-- Sleep Quality - 75% -->
+                                                        <path d="M18 2 a16 16 0 1 1 0 32 a16 16 0 1 1 0 -32" fill="none"
+                                                            stroke="url(#aiBlueGrad)" stroke-width="3"
+                                                            stroke-dasharray="75,25" stroke-linecap="round"
+                                                            opacity="0.9" />
+                                                        <!-- Physical Activity - 60% -->
+                                                        <path d="M18 2 a16 16 0 1 1 0 32 a16 16 0 1 1 0 -32" fill="none"
+                                                            stroke="url(#aiGreenGrad)" stroke-width="3"
+                                                            stroke-dasharray="60,40" stroke-linecap="round"
+                                                            opacity="0.9" />
+                                                        <!-- Stress Management - 45% -->
+                                                        <path d="M18 2 a16 16 0 1 1 0 32 a16 16 0 1 1 0 -32" fill="none"
+                                                            stroke="url(#aiPurpleGrad)" stroke-width="3"
+                                                            stroke-dasharray="45,55" stroke-linecap="round"
+                                                            opacity="0.9" />
+                                                    </svg>
+                                                    <!-- Center Text -->
+                                                    <div class="absolute inset-0 flex items-center justify-center">
+                                                        <div class="text-center">
+                                                            <div class="text-2xl font-bold text-medical-blue-600 mb-1">
+                                                                ۸۵٪</div>
+                                                            <div class="text-sm text-gray-600 font-medium">کلی</div>
+                                                            <div class="text-xs text-gray-500 mt-1">بهبود سلامت</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- AI Recommendations Stats -->
+                                            <div class="space-y-4">
+                                                <div
+                                                    class="flex items-center justify-between p-3 bg-gradient-to-r from-medical-blue-50 to-medical-blue-100 dark:from-medical-blue-900/20 dark:to-medical-blue-800/20 rounded-xl">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="w-8 h-8 bg-medical-blue-500 rounded-lg flex items-center justify-center">
+                                                            <i class="fas fa-bed text-white text-sm"></i>
+                                                        </div>
+                                                        <span class="text-sm font-medium">کیفیت خواب</span>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <div class="font-semibold text-medical-blue-600">۷۵٪</div>
+                                                        <div class="text-xs text-gray-500">عالی</div>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    class="flex items-center justify-between p-3 bg-gradient-to-r from-medical-green-50 to-medical-green-100 dark:from-medical-green-900/20 dark:to-medical-green-800/20 rounded-xl">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="w-8 h-8 bg-medical-green-500 rounded-lg flex items-center justify-center">
+                                                            <i class="fas fa-running text-white text-sm"></i>
+                                                        </div>
+                                                        <span class="text-sm font-medium">فعالیت بدنی</span>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <div class="font-semibold text-medical-green-600">۶۰٪</div>
+                                                        <div class="text-xs text-gray-500">خوب</div>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    class="flex items-center justify-between p-3 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                                                            <i class="fas fa-heart text-white text-sm"></i>
+                                                        </div>
+                                                        <span class="text-sm font-medium">مدیریت استرس</span>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <div class="font-semibold text-purple-600">۴۵٪</div>
+                                                        <div class="text-xs text-gray-500">نیاز به بهبود</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <!-- Stat Widgets Row - Updated with new metrics -->
+                    <section id="dashboard-stats" class="py-6">
+                        <div class="container mx-auto px-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span
+                                            class="w-12 h-12 rounded-full flex items-center justify-center bg-medical-blue-500 text-white">
+                                            <i class="fas fa-robot"></i>
+                                        </span>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">امروز</div>
+                                    </div>
+                                    <h4 class="text-2xl font-bold">+۱۵۵</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">مشاوره‌های انجام شده با دستیار
+                                        هوشمند</p>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span
+                                            class="w-12 h-12 rounded-full flex items-center justify-center bg-medical-green-500 text-white">
+                                            <i class="fas fa-user-md"></i>
+                                        </span>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">این هفته</div>
+                                    </div>
+                                    <h4 class="text-2xl font-bold">۳۹+</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">ویزیت‌های آنلاین با پزشکان</p>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span
+                                            class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white">
+                                            <i class="fas fa-chart-line"></i>
+                                        </span>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">ماه جاری</div>
+                                    </div>
+                                    <h4 class="text-2xl font-bold">۲۵+</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">تعداد پیگیری‌های انجام شده</p>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span
+                                            class="w-12 h-12 rounded-full flex items-center justify-center bg-amber-500 text-white">
+                                            <i class="fas fa-prescription-bottle"></i>
+                                        </span>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">کل</div>
+                                    </div>
+                                    <h4 class="text-2xl font-bold">۱۸k+</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">تعداد نسخه‌های فعال</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Health Overview Section -->
+                    <section id="health-overview" class="py-8 lg:py-12">
+                        <div class="container mx-auto px-4">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">نمای کلی سلامت
+                                </h2>
+                                <a href="#" class="text-medical-blue-600 hover:text-medical-blue-700 transition-colors">
+                                    <i class="fas fa-arrow-left ml-2"></i>
+                                    مشاهده همه
+                                </a>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- Sleep Card -->
+                                <div
+                                    class="health-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl p-6 shadow-lg">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="text-lg font-semibold mb-1">خواب</h3>
+                                            <p class="text-2xl font-bold">70%</p>
+                                            <p class="text-blue-100 text-sm">خواب خوب</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-3xl font-bold">8h</p>
+                                            <p class="text-blue-100 text-sm">ساعت خواب</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-white/20 rounded-full h-2">
+                                        <div class="bg-white h-2 rounded-full" style="width: 70%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Stress Level Card -->
+                                <div
+                                    class="health-card bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-2xl p-6 shadow-lg">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="text-lg font-semibold mb-1">سطح استرس</h3>
+                                            <p class="text-2xl font-bold">80%</p>
+                                            <p class="text-purple-100 text-sm">استرس کم</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <i class="fas fa-chart-bar text-3xl text-white/80"></i>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-white/20 rounded-full h-2">
+                                        <div class="bg-white h-2 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Activity Card -->
+                                <div
+                                    class="health-card bg-gradient-to-br from-green-500 to-blue-500 text-white rounded-2xl p-6 shadow-lg">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="text-lg font-semibold mb-1">فعالیت</h3>
+                                            <p class="text-2xl font-bold">645m</p>
+                                            <p class="text-green-100 text-sm">قدم‌ها</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <i class="fas fa-running text-3xl text-white/80"></i>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-white/20 rounded-full h-2">
+                                        <div class="bg-white h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Recent AI Conversations - Redesigned with better styling -->
+                    <section id="ai-conversations"
+                        class="py-8 lg:py-12 bg-gradient-to-br from-white/80 to-medical-blue-50/30 dark:from-gray-800/80 dark:to-medical-blue-900/20">
+                        <div class="container mx-auto px-4">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-brain text-white text-lg"></i>
+                                    </div>
+                                    <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">گفتگوهای
+                                        اخیر با دستیار هوشمند</h2>
+                                </div>
+                                <a href="#ai-assistant"
+                                    class="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <i class="fas fa-plus text-sm"></i>
+                                    <span>گفتگوی جدید</span>
+                                </a>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Enhanced Chat History Item 1 -->
+                                <div
+                                    class="group chat-history-card bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 dark:border-gray-700 hover:border-medical-blue-200 dark:hover:border-medical-blue-600 transform hover:-translate-y-2">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div
+                                            class="w-12 h-12 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                            <i class="fas fa-robot text-white text-lg"></i>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">امروز، ۱۰:۳۰</span>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mt-1 ml-auto"></div>
+                                        </div>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-lg">تب و سردرد</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">علائم
+                                        سرماخوردگی و راهنمایی‌های درمانی با تشخیص اولیه هوشمند</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-medical-blue-100 to-medical-blue-200 dark:from-medical-blue-900/40 dark:to-medical-blue-800/40 text-medical-blue-700 dark:text-medical-blue-300 text-xs rounded-full font-medium">AI
+                                                Assistant</span>
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">تکمیل
+                                                شده</span>
+                                        </div>
+                                        <div
+                                            class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center group-hover:bg-medical-blue-100 dark:group-hover:bg-medical-blue-900/30 transition-colors">
+                                            <i
+                                                class="fas fa-arrow-left text-xs text-gray-500 group-hover:text-medical-blue-600 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Chat History Item 2 -->
+                                <div
+                                    class="group chat-history-card bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 dark:border-gray-700 hover:border-medical-green-200 dark:hover:border-medical-green-600 transform hover:-translate-y-2">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div
+                                            class="w-12 h-12 bg-gradient-to-r from-medical-green-500 to-medical-blue-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                            <i class="fas fa-robot text-white text-lg"></i>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">دیروز، ۱۴:۲۰</span>
+                                            <div class="w-2 h-2 bg-yellow-500 rounded-full mt-1 ml-auto"></div>
+                                        </div>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-lg">درد شکم</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">مشاوره در
+                                        مورد مشکلات گوارشی و توصیه‌های تغذیه‌ای</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-medical-green-100 to-medical-green-200 dark:from-medical-green-900/40 dark:to-medical-green-800/40 text-medical-green-700 dark:text-medical-green-300 text-xs rounded-full font-medium">AI
+                                                Assistant</span>
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-yellow-100 to-yellow-200 dark:from-yellow-900/40 dark:to-yellow-800/40 text-yellow-700 dark:text-yellow-300 text-xs rounded-full font-medium">در
+                                                انتظار</span>
+                                        </div>
+                                        <div
+                                            class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center group-hover:bg-medical-green-100 dark:group-hover:bg-medical-green-900/30 transition-colors">
+                                            <i
+                                                class="fas fa-arrow-left text-xs text-gray-500 group-hover:text-medical-green-600 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Chat History Item 3 -->
+                                <div
+                                    class="group chat-history-card bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-600 transform hover:-translate-y-2">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div
+                                            class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                            <i class="fas fa-robot text-white text-lg"></i>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">۲ روز پیش</span>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mt-1 ml-auto"></div>
+                                        </div>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-lg">سوال دارویی
+                                    </h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">راهنمایی در
+                                        مورد مصرف داروها و تداخل‌های دارویی</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-200 dark:from-purple-900/40 dark:to-pink-800/40 text-purple-700 dark:text-purple-300 text-xs rounded-full font-medium">AI
+                                                Assistant</span>
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">تکمیل
+                                                شده</span>
+                                        </div>
+                                        <div
+                                            class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30 transition-colors">
+                                            <i
+                                                class="fas fa-arrow-left text-xs text-gray-500 group-hover:text-purple-600 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Doctor Conversations - Redesigned with enhanced styling -->
+                    <section id="doctor-conversations"
+                        class="py-8 lg:py-12 bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-gray-900/80 dark:to-gray-800/80">
+                        <div class="container mx-auto px-4">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-user-md text-white text-lg"></i>
+                                    </div>
+                                    <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">مکالمات با
+                                        پزشکان متخصص</h2>
+                                </div>
+                                <a href="#"
+                                    class="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <i class="fas fa-plus text-sm"></i>
+                                    <span>مشاوره جدید</span>
+                                </a>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Enhanced Doctor Chat 1 -->
+                                <div
+                                    class="group doctor-chat-card bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-600 transform hover:-translate-y-2">
+                                    <div class="flex items-center gap-4 mb-6">
+                                        <div
+                                            class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                            <i class="fas fa-user-md text-white text-xl"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-gray-900 dark:text-white text-lg mb-1">دکتر
+                                                احمدی</h3>
+                                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-1">متخصص قلب و عروق
+                                            </p>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">آخرین مکالمه: ۲
+                                                    روز پیش</span>
+                                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-800/40 transition-colors">
+                                            <i class="fas fa-phone text-xs text-purple-600"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 leading-relaxed">مشاوره در
+                                        مورد فشار خون بالا و رژیم غذایی مناسب با توصیه‌های تخصصی</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">تکمیل
+                                                شده</span>
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/40 dark:to-purple-800/40 text-purple-700 dark:text-purple-300 text-xs rounded-full font-medium">قلب
+                                                و عروق</span>
+                                        </div>
+                                        <button
+                                            class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm font-medium">
+                                            ادامه گفتگو
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Doctor Chat 2 -->
+                                <div
+                                    class="group doctor-chat-card bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-orange-200 dark:hover:border-orange-600 transform hover:-translate-y-2">
+                                    <div class="flex items-center gap-4 mb-6">
+                                        <div
+                                            class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                            <i class="fas fa-user-md text-white text-xl"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-gray-900 dark:text-white text-lg mb-1">دکتر
+                                                محمدی</h3>
+                                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-1">متخصص داخلی</p>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">آخرین مکالمه: ۱
+                                                    هفته پیش</span>
+                                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-800/40 transition-colors">
+                                            <i class="fas fa-calendar text-xs text-orange-600"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 leading-relaxed">بررسی نتایج
+                                        آزمایشات و تجویز دارو با پیگیری منظم</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-yellow-100 to-yellow-200 dark:from-yellow-900/40 dark:to-yellow-800/40 text-yellow-700 dark:text-yellow-300 text-xs rounded-full font-medium">در
+                                                انتظار</span>
+                                            <span
+                                                class="px-3 py-1 bg-gradient-to-r from-orange-100 to-orange-200 dark:from-orange-900/40 dark:to-orange-800/40 text-orange-700 dark:text-orange-300 text-xs rounded-full font-medium">داخلی</span>
+                                        </div>
+                                        <button
+                                            class="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm font-medium">
+                                            ادامه گفتگو
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Medication Reminders -->
+                    <section id="medication-reminders" class="py-8 lg:py-12">
+                        <div class="container mx-auto px-4">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">یادآوری دارو
+                                </h2>
+                                <a href="#" class="text-medical-blue-600 hover:text-medical-blue-700 transition-colors">
+                                    <i class="fas fa-arrow-left ml-2"></i>
+                                    مشاهده همه
+                                </a>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 lg:p-8 shadow-lg">
+                                <!-- Date Header -->
+                                <div class="text-center mb-6">
+                                    <div class="text-4xl font-bold text-medical-blue-600 mb-2">۱۲</div>
+                                    <p class="text-gray-600 dark:text-gray-400">امروز، دوشنبه خرداد ۱۴۰۳</p>
+                                </div>
+
+                                <!-- Calendar Strip -->
+                                <div
+                                    class="flex items-center justify-between mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">دوشنبه</p>
+                                        <p class="font-semibold">۳</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">سه‌شنبه</p>
+                                        <p class="font-semibold">۴</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">چهارشنبه</p>
+                                        <p
+                                            class="font-semibold text-medical-blue-600 bg-medical-blue-100 dark:bg-medical-blue-900/30 px-3 py-1 rounded-full">
+                                            ۵</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">پنج‌شنبه</p>
+                                        <p class="font-semibold">۶</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">جمعه</p>
+                                        <p class="font-semibold">۷</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">شنبه</p>
+                                        <p class="font-semibold">۸</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">یکشنبه</p>
+                                        <p class="font-semibold">۹</p>
+                                    </div>
+                                    <button
+                                        class="p-2 text-medical-blue-600 hover:bg-medical-blue-100 dark:hover:bg-medical-blue-900/30 rounded-lg">
+                                        <i class="fas fa-calendar"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Medicine List -->
+                                <div class="space-y-4">
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">داروها</h3>
+
+                                    <!-- Medicine Item 1 -->
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-gradient-to-r from-pink-50 to-blue-50 dark:from-pink-900/20 dark:to-blue-900/20 rounded-xl border border-pink-200 dark:border-pink-700">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-pills text-white text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 dark:text-white">آسپرین</h4>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">۱۰ میلی‌گرم | ۱
+                                                    کپسول
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">۲۰:۰۵</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">شب</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Medicine Item 2 -->
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-capsules text-white text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 dark:text-white">آموکسی‌سیلین</h4>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">۱۰ میلی‌گرم | ۱
+                                                    کپسول
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">۰۹:۴۵</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">صبح</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Medicine Item 3 -->
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-700">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-prescription-bottle text-white text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 dark:text-white">لیزینوپریل</h4>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">۱۰ میلی‌گرم | ۱
+                                                    کپسول
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">۲۰:۰۵</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">شب</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Assistant Link -->
+                                <div
+                                    class="mt-6 p-4 bg-gradient-to-r from-medical-blue-50 to-medical-green-50 dark:from-medical-blue-900/20 dark:to-medical-green-900/20 rounded-xl border border-medical-blue-200 dark:border-medical-blue-700">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-plus text-white text-sm"></i>
+                                            </div>
+                                            <span class="font-medium text-gray-900 dark:text-white">دستیار هوشمند</span>
+                                        </div>
+                                        <a href="#ai-assistant"
+                                            class="text-medical-blue-600 hover:text-medical-blue-700 transition-colors">
+                                            <i class="fas fa-arrow-left"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Medical Records -->
+                    <section id="medical-records" class="py-8 lg:py-12 bg-white/50 dark:bg-gray-800/50">
+                        <div class="container mx-auto px-4">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">پرونده پزشکی
+                                </h2>
+                                <a href="#" class="text-medical-blue-600 hover:text-medical-blue-700 transition-colors">
+                                    <i class="fas fa-arrow-left ml-2"></i>
+                                    مشاهده همه
+                                </a>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <!-- Medical Record 1 -->
+                                <div
+                                    class="medical-record-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-r from-medical-blue-500 to-medical-blue-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fas fa-file-medical text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">آزمایش خون</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">آخرین آزمایش: ۱۵ فروردین
+                                        ۱۴۰۳
+                                    </p>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded-full">نرمال</span>
+                                    </div>
+                                </div>
+
+                                <!-- Medical Record 2 -->
+                                <div
+                                    class="medical-record-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-r from-medical-green-500 to-medical-green-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fas fa-heartbeat text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">نوار قلب</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">آخرین نوار: ۲۰ فروردین ۱۴۰۳
+                                    </p>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded-full">نرمال</span>
+                                    </div>
+                                </div>
+
+                                <!-- Medical Record 3 -->
+                                <div
+                                    class="medical-record-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fas fa-pills text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">داروها</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">۳ داروی فعال</p>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded-full">فعال</span>
+                                    </div>
+                                </div>
+
+                                <!-- Medical Record 4 -->
+                                <div
+                                    class="medical-record-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-4">
+                                        <i class="fas fa-calendar-check text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">نوبت‌ها</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">نوبت بعدی: ۵ اردیبهشت</p>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 text-xs rounded-full">قریب‌الوقوع</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+
+                <!-- Doctor Conversations, Medication Reminders, Medical Records -->
+                <!-- Copied exactly from index.html above; preserved structure and classes. -->
+            </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 py-6 lg:py-8">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="p-2 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 rounded-xl"><i
+                            class="fas fa-user-md text-white text-xl"></i></div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">TebNegar</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">دستیار هوشمند پزشکی شما برای تشخیص
+                    اولیه علائم و راهنمایی‌های پزشکی</p>
+            </div>
+            <div class="border-t border-gray-200 dark:border-gray-600 pt-4">
+                <p class="text-sm text-gray-600 dark:text-gray-400"><i
+                        class="fas fa-exclamation-triangle text-yellow-500 ml-2"></i>طب نگار میتواند اشتباه کند
+                    و جایگزین مشاوره پزشک نمیباشد</p>
+            </div>
+        </div>
+    </footer>
+    </main>
+
+    <!-- Bottom Navigation Bar (Mobile) -->
+    <nav id="bottom-nav"
+        class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border-t border-white/30 dark:border-gray-700/30 shadow-2xl z-50">
+        <div class="flex items-center justify-around py-2">
+            <a href="Dashboard.html"
+                class="bottom-nav-item active flex flex-col items-center py-2 px-3 text-medical-green-500">
+                <div
+                    class="w-10 h-10 bg-white/20 dark:bg-gray-700/20 rounded-xl flex items-center justify-center mb-1 backdrop-blur-sm">
+                    <i class="fas fa-home text-lg"></i>
+                </div><span class="text-xs font-medium">خانه</span>
+            </a>
+            <a href="Assistant.html"
+                class="bottom-nav-item flex flex-col items-center py-2 px-3 text-gray-600 dark:text-gray-300">
+                <div
+                    class="w-10 h-10 bg-white/20 dark:bg-gray-700/20 rounded-xl flex items-center justify-center mb-1 backdrop-blur-sm">
+                    <i class="fas fa-comments text-lg"></i>
+                </div><span class="text-xs font-medium">چت</span>
+            </a>
+            <a href="#" class="bottom-nav-item flex flex-col items-center py-2 px-3">
+                <div
+                    class="w-14 h-14 bg-gradient-to-r from-medical-green-500 to-medical-green-600 rounded-2xl flex items-center justify-center mb-1 shadow-2xl backdrop-blur-sm">
+                    <i class="fas fa-plus text-white text-xl"></i>
+                </div><span class="text-xs font-medium text-gray-600 dark:text-gray-300">افزودن</span>
+            </a>
+            <a href="#files"
+                class="bottom-nav-item flex flex-col items-center py-2 px-3 text-gray-600 dark:text-gray-300">
+                <div
+                    class="w-10 h-10 bg-white/20 dark:bg-gray-700/20 rounded-xl flex items-center justify-center mb-1 backdrop-blur-sm">
+                    <i class="fas fa-file-medical text-lg"></i>
+                </div><span class="text-xs font-medium">پرونده</span>
+            </a>
+            <a href="Profile.html"
+                class="bottom-nav-item flex flex-col items-center py-2 px-3 text-gray-600 dark:text-gray-300">
+                <div
+                    class="w-10 h-10 bg-white/20 dark:bg-gray-700/20 rounded-xl flex items-center justify-center mb-1 backdrop-blur-sm">
+                    <i class="fas fa-user text-lg"></i>
+                </div><span class="text-xs font-medium">پروفایل</span>
+            </a>
+        </div>
+    </nav>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

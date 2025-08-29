@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#27CFA7">
+    <title>TebNegar - Splash</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-[#F5F7FB] dark:bg-slate-900 text-gray-900 dark:text-gray-100">
+    <!-- Splash Screen extracted from index.html -->
+    <!-- NOTE: این صفحه به صورت مستقل برای اتصال به بک‌اند استفاده خواهد شد -->
+    <div id="splash-screen"
+        class="fixed inset-0 z-[9999] bg-gradient-to-br from-medical-green-400 via-medical-green-500 to-medical-blue-600 flex items-center justify-center">
+        <div class="text-center text-white max-w-md mx-auto px-6">
+            <div id="splash-slide-1" class="splash-slide">
+                <div
+                    class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
+                    <i class="fas fa-user-md text-4xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold mb-4">به TebNegar خوش آمدید</h1>
+                <p class="text-lg mb-8 opacity-90">برای استفاده بهتر از خدمات، لطفاً اطلاعات خود را تکمیل کنید</p>
+                <div class="flex gap-3">
+                    <button id="skip-auth"
+                        class="px-6 py-3 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-sm transition-colors">رد
+                        کردن</button>
+                    <button id="start-auth"
+                        class="px-6 py-3 bg-white text-medical-green-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors">شروع</button>
+                </div>
+            </div>
+
+            <div id="splash-slide-2" class="splash-slide hidden">
+                <div
+                    class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
+                    <i class="fas fa-user-lock text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-6">اطلاعات کاربری</h2>
+                <form id="auth-form" class="space-y-4 text-right">
+                    <div><input type="text" id="auth-name" placeholder="نام" required
+                            class="w-full px-4 py-3 bg-white/90 text-gray-900 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white">
+                    </div>
+                    <div><input type="email" id="auth-email" placeholder="ایمیل" required
+                            class="w-full px-4 py-3 bg-white/90 text-gray-900 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white">
+                    </div>
+                    <div><input type="tel" id="auth-phone" placeholder="شماره تلفن" required
+                            class="w-full px-4 py-3 bg-white/90 text-gray-900 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white">
+                    </div>
+                    <button type="submit"
+                        class="w-full px-6 py-3 bg-white text-medical-green-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors mb-4">تکمیل
+                        اطلاعات</button>
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-white/30"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm"><span
+                                class="px-2 bg-transparent text-white/80">یا</span></div>
+                    </div>
+                    <button type="button" id="google-signin"
+                        class="w-full px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"><i
+                            class="fab fa-google text-red-500"></i>ورود با گوگل</button>
+                </form>
+                <button id="back-to-slide-1" class="mt-4 text-white/80 hover:text-white transition-colors"><i
+                        class="fas fa-arrow-right ml-2"></i>بازگشت</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="js/splash.js"></script>
+</body>
+
+</html>

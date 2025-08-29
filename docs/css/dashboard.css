@@ -1,0 +1,87 @@
+/* Dashboard page-specific extracted styles (kept identical) */
+
+/* Hover effects for cards */
+.feature-card,
+.chat-history-card,
+.doctor-chat-card,
+.medical-record-card,
+.health-card {
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover,
+.chat-history-card:hover,
+.doctor-chat-card:hover,
+.medical-record-card:hover,
+.health-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Dashboard header container */
+#dashboard-header {
+  position: relative;
+  overflow: visible;
+}
+
+#dashboard-header::before {
+  content: none;
+}
+
+/* Recent AI Conversations section */
+#ai-conversations .group:hover .w-8.h-8 {
+  transform: translateY(-2px);
+}
+
+/* Health card glow */
+.health-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.health-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.health-card:hover::before {
+  opacity: 1;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .quick-action-btn {
+    padding: 1rem;
+  }
+
+  .health-card {
+    padding: 1.5rem;
+  }
+
+  .chat-history-card,
+  .doctor-chat-card,
+  .medical-record-card {
+    padding: 1.5rem;
+  }
+
+  main {
+    padding-bottom: 6rem;
+  }
+}
+
+/* Sidebar and bottom nav active states (scoped) */
+.sidebar-nav-item.active {
+  background-color: #ffffff33;
+  color: #fff;
+}
+
+.bottom-nav-item.active {
+  color: #22c55e !important;
+}

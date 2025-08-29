@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app.title">TebNegar - دستیار هوشمند پزشکی</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Medical Blue Theme
+                        'medical-blue': {
+                            50: '#f0f8ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e'
+                        },
+                        // Medical Green Theme
+                        'medical-green': {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Font - IRANSans -->
+    <style>
+        @font-face {
+            font-family: 'IRANSans';
+            src: url('IRANSansXFaNum-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-slate-900 text-gray-900 dark:text-gray-100 transition-all duration-300">
+    
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+            <div class="relative w-full h-14">
+                <!-- Left group (actions): larger inset padding; will auto-swap in LTR -->
+                <div class="absolute inset-y-0 left-0 header-left flex items-center gap-3 sm:gap-4 pl-6">
+                    <div id="lang-segment" class="segmented relative ml-0">
+                        <span class="seg-thumb" aria-hidden="true"></span>
+                        <button id="lang-fa" class="seg-item" data-lang="fa">FA</button>
+                        <button id="lang-en" class="seg-item" data-lang="en">EN</button>
+                    </div>
+                    <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+
+                <!-- Right group (profile+logo+brand): larger inset padding; will auto-swap in LTR -->
+                <div class="absolute inset-y-0 right-0 header-right flex items-center gap-2 sm:gap-3 pr-6">
+                    <!-- Profile button FLUSH to side -->
+                    <div class="relative mr-0">
+                        <button id="profile-button" class="icon-btn" aria-label="Profile">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <div id="profile-menu" class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden">
+                            <button class="w-full text-right px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-i18n="profile.settings">تنظیمات</button>
+                            <button class="w-full text-right px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-i18n="profile.logout">خروج</button>
+                        </div>
+                    </div>
+                    <!-- Logo (circular) -->
+                    <div class="icon-btn bg-gradient-to-r from-medical-blue-500 to-medical-green-500 text-white" aria-label="Logo">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <!-- Brand name and tagline -->
+                    <div class="hidden sm:block text-right">
+                        <div class="text-sm font-bold text-gray-900 dark:text-white" data-i18n="header.brand">TebNegar</div>
+                        <div class="text-[11px] text-gray-600 dark:text-gray-400 leading-tight" data-i18n="header.tagline">دستیار هوشمند پزشکی</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex relative">
+            <!-- Sidebar - Chat History -->
+            <aside id="sidebar" class="fixed lg:static inset-y-0 right-0 z-40 w-80 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-l lg:border-r border-gray-200 dark:border-gray-700 flex flex-col transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+                <!-- Sidebar Header -->
+                <div class="p-4 lg:p-6 border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg" data-i18n="sidebar.title">تاریخچه چت‌ها</h3>
+                        <!-- Close button for mobile -->
+                        <button id="sidebar-close" class="lg:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" aria-label="Close sidebar">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <!-- New Chat in Sidebar -->
+                    <div class="mt-4">
+                        <button id="new-chat-sidebar" class="md3-btn md3-primary w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl">
+                            <i class="fas fa-plus"></i>
+                            <span data-i18n="actions.new_chat">گفتگوی جدید</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-2">
+                    <!-- Dynamic chat history -->
+                </div>
+            </aside>
+
+            <!-- Sidebar Overlay (Mobile) -->
+            <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+            <!-- Main Chat Area -->
+            <main class="flex-1 flex flex-col min-w-0">
+                <!-- Welcome Card -->
+                <div id="welcome-card" class="p-4 lg:p-6">
+                    <div class="medical-card bg-white/70 dark:bg-gray-800/70 rounded-2xl p-4 lg:p-6 text-center">
+                        <div class="w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-r from-medical-blue-500 to-medical-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-robot text-white text-xl lg:text-2xl"></i>
+                        </div>
+                        <h2 class="text-xl lg:text-2xl font-bold mb-2" data-i18n="welcome.title">به TebNegar خوش آمدید</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm lg:text-base" data-i18n="welcome.subtitle">من یک دستیار هوشمند پزشکی هستم. علائم خود را شرح دهید تا بتوانم شما را راهنمایی کنم.</p>
+                        
+                        <!-- Quick Questions -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 mt-6">
+                            <button class="quick-question p-3 lg:p-4 bg-gradient-to-r from-medical-blue-100 to-medical-blue-200 dark:from-medical-blue-900/30 dark:to-medical-blue-800/30 rounded-xl hover:scale-105 transition-transform">
+                                <i class="fas fa-thermometer-half text-medical-blue-600 text-lg lg:text-xl mb-2"></i>
+                                <p class="text-xs lg:text-sm font-medium" data-i18n="quick.q1">تب و سردرد دارم</p>
+                            </button>
+                            <button class="quick-question p-3 lg:p-4 bg-gradient-to-r from-medical-green-100 to-medical-green-200 dark:from-medical-green-900/30 dark:to-medical-green-800/30 rounded-xl hover:scale-105 transition-transform">
+                                <i class="fas fa-heart text-medical-green-600 text-lg lg:text-xl mb-2"></i>
+                                <p class="text-xs lg:text-sm font-medium" data-i18n="quick.q2">درد قفسه سینه</p>
+                            </button>
+                            <button class="quick-question p-3 lg:p-4 bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl hover:scale-105 transition-transform sm:col-span-2 lg:col-span-1">
+                                <i class="fas fa-pills text-purple-600 text-lg lg:text-xl mb-2"></i>
+                                <p class="text-xs lg:text-sm font-medium" data-i18n="quick.q3">سوال دارویی</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4">
+                    <!-- Messages will be inserted here -->
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-4 lg:p-6 border-t border-gray-200 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="flex items-center gap-3">
+                            <div class="relative flex-1">
+                                <textarea 
+                                    id="message-input" 
+                                    placeholder="علائم خود را شرح دهید..."
+                                    data-i18n-placeholder="input.placeholder"
+                                    class="chat-input"
+                                    rows="1"
+                                ></textarea>
+                            </div>
+                            <button 
+                                id="send-button" 
+                                class="send-btn"
+                                disabled
+                            >
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 py-3 lg:py-4">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
+                    <i class="fas fa-exclamation-triangle text-yellow-500 ml-2"></i>
+                    <span data-i18n="footer.disclaimer">این تشخیص اولیه است و جایگزین مشاوره پزشک نمی‌باشد</span>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+
