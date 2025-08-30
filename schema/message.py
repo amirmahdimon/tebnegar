@@ -16,4 +16,4 @@ class MessageInDB(BaseModel):
         from_attributes = True
 
 class AIResponseMessage(MessageInDB):
-    elapsed_time_ms: int
+    elapsed_time_ms: int | None = None
