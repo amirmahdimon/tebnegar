@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from dependency.dependencies import get_db
 from schema.message import MessageCreate, AIResponseMessage
 from repository import message
-from services.ai.ai_manager import ai_manager # Assuming your AI manager is set up
+from services.ai.ai_manager import ai_manager
 
 router = APIRouter()
 

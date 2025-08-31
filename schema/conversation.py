@@ -63,3 +63,6 @@ class ConversationInDB(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ConversationTitle(BaseModel):
+    title: str 

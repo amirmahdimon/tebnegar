@@ -36,5 +36,51 @@ Your operational protocol is as follows:
         return self.sessions.send_message(patient_id, message)
 
 
+    def generate_title(self, patient_id: str) -> str:
+        """
+        Generates a title by sending a hidden prompt to the active chat session
+        and then removing the interaction from the history.
+
+        Args:
+            patient_id: The conversation_id to identify the active chat session.
+
+        Returns:
+            A generated title string, or a fallback title if an error occurs.
+        """
+
+        # 1. Get the current, active chat session for the user
+        chat_session = self.sessions.get_or_create_session(patient_id=patient_id)
+        
+        # If the conversation has just started, there's no context for a title
+        if not chat_session.history:
+            return "New Conversation"
+
+        # 2. Define the "hidden" prompt that will be temporarily added
+        prompt = """
+        [SYSTEM PROMPT]: Based on our conversation so far, what is a concise, 
+        5-word-maximum title for this chat? Respond with only the title and nothing else.
+        """
+
+        try:
+            # 3. Send the message. This WILL add the prompt and response to the session's history.
+            response = chat_session.send_message(prompt)
+            
+            # 4. CRITICAL STEP: Clean up the history.
+            #    We are removing the last two entries:
+            #    - The system prompt we just sent.
+            #    - The AI's title response.
+            #    This ensures the main conversation is not polluted.
+            if len(chat_session.history) >= 2:
+                chat_session.history = chat_session.history[:-2]
+
+            # 5. Clean and return the title
+            generated_title = response.text.strip().strip('"')
+            return generated_title
+
+        except Exception as e:
+            # If anything goes wrong, log it and return a safe default
+            print(f"Error generating title for session {patient_id}: {e}")
+            return "New Conversation"
+
 # Global instance
 ai_manager = AIManager(provider_name="gemini")

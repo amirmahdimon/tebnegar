@@ -2,9 +2,11 @@ import uuid
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from dependency.dependencies import get_db
-from schema.conversation import ConversationHistory, ConversationInDB,ConversationCreate,ConversationUpdate
+from schema.conversation import ConversationHistory, ConversationInDB, ConversationCreate, ConversationUpdate, ConversationTitle
 from repository import conversation
+from services.ai.ai_manager import ai_manager
 
 router = APIRouter()
 
@@ -16,7 +18,7 @@ def get_session_conversations(session_id: uuid.UUID, db: Session = Depends(get_d
     return conversation.get_by_session_id(db=db, session_id=session_id)
 
 @router.get("/{conversation_id}/messages", response_model=ConversationInDB)
-def get_conversation_details(conversation_id: uuid.UUID, db: Session = Depends(get_db)):
+def get_conversation_messages(conversation_id: uuid.UUID, db: Session = Depends(get_db)):
     """
     Get a single conversation with all its messages.
     """
@@ -61,3 +63,33 @@ def delete_conversation(conversation_id: uuid.UUID, db: Session = Depends(get_db
         
     conversation.remove(db=db, id=conversation_id)
     return None
+
+
+
+@router.post("/{conversation_id}/generate-title", response_model=ConversationInDB)
+def generate_and_update_conversation_title(
+    conversation_id: uuid.UUID,
+    db: Session = Depends(get_db)
+):
+    """
+    Generates a title for the conversation using the active AI session
+    without polluting the chat history, and updates the database.
+    """
+    # 1. Verify the conversation exists in our database.
+    db_conversation = conversation.get(db=db, id=conversation_id)
+    if not db_conversation:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+
+    # 2. Call the AI manager's new method to get the title.
+    #    The conversation_id is used as the patient_id for the session.
+    new_title = ai_manager.generate_title(patient_id=str(conversation_id))
+
+    # 3. Prepare the update data.
+    update_data = ConversationUpdate(title=new_title)
+
+    # 4. Save the new title to the database.
+    updated_conversation = conversation.update(
+        db=db, db_obj=db_conversation, obj_in=update_data
+    )
+
+    return ConversationTitle(title=new_title)
