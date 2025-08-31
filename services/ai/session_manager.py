@@ -1,9 +1,11 @@
 from threading import Lock
 
+from google.generativeai.generative_models import ChatSession
+
 class SessionManager:
     def __init__(self, provider):
         self.provider = provider
-        self.sessions = {}   # patient_id → session object
+        self.sessions: dict[str,ChatSession] = {}   # patient_id → session object
         self.lock = Lock()
 
     def get_or_create_session(self, patient_id: str):

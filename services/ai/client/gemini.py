@@ -1,4 +1,6 @@
 import google.generativeai as genai
+from google.generativeai.generative_models import ChatSession
+
 from config import SETTINGS  # Assuming your settings are in config.settings
 from services.ai.base import AIProvider
 
@@ -11,7 +13,7 @@ class GeminiClient(AIProvider):
         
         self.model = genai.GenerativeModel("gemini-2.5-pro",system_instruction=system_instruction) # type: ignore
 
-    def start_session(self):
+    def start_session(self) -> ChatSession:
         """
         Starts a new chat session. The model already knows its system instruction.
         """
