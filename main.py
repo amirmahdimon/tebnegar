@@ -4,6 +4,7 @@ from config.settings import SETTINGS
 from db.base import Base
 from db.session import engine
 from api.v1 import api_v1_router
+from db.model import * # Import all models
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)
@@ -11,7 +12,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="TebNegar MVP",
     description="AI-powered preliminary symptom assessment.",
-    version="0.0.1"
+    version="0.0.1",
+    debug=SETTINGS.DEVELOPMENT
 )
 
 app.include_router(api_v1_router.router, prefix="/api/v1")
@@ -20,7 +22,7 @@ app.include_router(api_v1_router.router, prefix="/api/v1")
 # Setup CORS
 origins = [
     "https://0ne-zero.github.io",
-    
+    "*"
 ]
 
 if SETTINGS.DEVELOPMENT:
