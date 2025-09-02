@@ -139,6 +139,9 @@ def google_callback(
         full_name = id_info.get("name")
         picture_url = id_info.get("picture")
 
+        print(email)
+        print(full_name)
+
         # Upsert user
         user = user_repo.user.get_by_email(db, email=email)
         if not user:
