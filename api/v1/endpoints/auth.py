@@ -98,7 +98,7 @@ def get_google_auth_url(session_id: str = Query(..., embed=True)):
     flow = _build_flow()
 
     state = secrets.token_urlsafe(16)
-    # Store state linked to session_id
+    # Store state linked to session_id      
     SESSION_STORE[state] = session_id
 
     authorization_url, _ = flow.authorization_url(
@@ -115,7 +115,7 @@ def google_callback(
     code: str = Body(..., embed=True),
     state: str = Body(..., embed=True),
     db: Session = Depends(get_db)
-):
+):          
     """
     Exchange code for tokens, verify state + ID token, upsert user, return JWT.
     """

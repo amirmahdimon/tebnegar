@@ -66,7 +66,7 @@ def delete_conversation(conversation_id: uuid.UUID, db: Session = Depends(get_db
 
 
 
-@router.post("/{conversation_id}/generate-title", response_model=ConversationInDB)
+@router.post("/{conversation_id}/generate-title", response_model=ConversationTitle)
 def generate_and_update_conversation_title(
     conversation_id: uuid.UUID,
     db: Session = Depends(get_db)

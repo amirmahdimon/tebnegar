@@ -9,3 +9,4 @@ google-auth-oauthlib
 python-jose[cryptography]
 passlib[bcrypt]
 pydantic[email]
+PyJWT

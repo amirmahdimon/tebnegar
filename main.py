@@ -20,6 +20,7 @@ app.include_router(api_v1_router.router, prefix="/api/v1")
 # Setup CORS
 origins = [
     "https://0ne-zero.github.io",
+    
 ]
 
 if SETTINGS.DEVELOPMENT:
