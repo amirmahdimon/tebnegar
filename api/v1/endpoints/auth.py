@@ -33,6 +33,8 @@ VALID_ISSUERS = {"accounts.google.com", "https://accounts.google.com"}
 SESSION_STORE: dict[str, str] = {}  # maps state -> session_id/user_id
 
 # ---- Helpers ----
+
+
 def _build_flow(redirect_uri: Optional[str] = None) -> Flow:
     return Flow.from_client_config(
         client_config={
@@ -50,7 +52,9 @@ def _build_flow(redirect_uri: Optional[str] = None) -> Flow:
 
 def _create_jwt_token(*, subject: str, expires_in_minutes: int | None = None) -> str:
     now = datetime.now(timezone.utc)
-    exp = now + timedelta(minutes=expires_in_minutes or SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES)
+    exp = now + \
+        timedelta(
+            minutes=expires_in_minutes or SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {
         "sub": subject,
         "iat": int(now.timestamp()),
@@ -68,7 +72,8 @@ def _verify_google_id_token(id_token_str: str) -> dict:
             SETTINGS.GOOGLE_CLIENT_ID,
         )
     except (ValueError, google_exceptions.GoogleAuthError) as e:
-        raise HTTPException(status_code=400, detail=f"Invalid Google ID token: {e}")
+        raise HTTPException(
+            status_code=400, detail=f"Invalid Google ID token: {e}")
 
     iss = info.get("iss")
     if iss not in VALID_ISSUERS:
@@ -80,10 +85,12 @@ def _verify_google_id_token(id_token_str: str) -> dict:
 
     email = info.get("email")
     if not email:
-        raise HTTPException(status_code=400, detail="Email not provided by Google")
+        raise HTTPException(
+            status_code=400, detail="Email not provided by Google")
 
     if not info.get("email_verified", False):
-        raise HTTPException(status_code=400, detail="Email is not verified by Google")
+        raise HTTPException(
+            status_code=400, detail="Email is not verified by Google")
 
     return info
 
@@ -98,7 +105,7 @@ def get_google_auth_url(session_id: str = Query(..., embed=True)):
     flow = _build_flow()
 
     state = secrets.token_urlsafe(16)
-    # Store state linked to session_id      
+    # Store state linked to session_id
     SESSION_STORE[state] = session_id
 
     authorization_url, _ = flow.authorization_url(
@@ -115,24 +122,26 @@ def google_callback(
     code: str = Body(..., embed=True),
     state: str = Body(..., embed=True),
     db: Session = Depends(get_db)
-):          
+):
     """
     Exchange code for tokens, verify state + ID token, upsert user, return JWT.
     """
     # Validate state
     session_id = SESSION_STORE.pop(state, None)
     if not session_id:
-        raise HTTPException(status_code=400, detail="Invalid or expired state parameter")
+        raise HTTPException(
+            status_code=400, detail="Invalid or expired state parameter")
 
     flow = _build_flow()
     try:
         flow.fetch_token(code=code)
         creds = flow.credentials
 
-        if not creds.id_token: # type: ignore
-            raise HTTPException(status_code=400, detail="No ID token returned by Google")
+        if not creds.id_token:  # type: ignore
+            raise HTTPException(
+                status_code=400, detail="No ID token returned by Google")
 
-        id_info = _verify_google_id_token(creds.id_token) # type: ignore
+        id_info = _verify_google_id_token(creds.id_token)  # type: ignore
 
         google_id = id_info.get("sub")
         email = id_info["email"]
@@ -148,7 +157,7 @@ def google_callback(
             user = user_repo.user.create(
                 db,
                 obj_in=UserCreate(
-                    google_id=google_id, # type: ignore
+                    google_id=google_id,  # type: ignore
                     email=email,
                     full_name=full_name,
                     picture_url=picture_url,
@@ -159,6 +168,9 @@ def google_callback(
 
         resp = {
             "jwt_token": access_token,
+            "email": email,
+            "full_name": full_name,
+            "picture_url": picture_url,
             "token_type": "bearer",
         }
 
@@ -168,4 +180,3 @@ def google_callback(
         raise
     except Exception:
         raise HTTPException(status_code=400, detail="Authentication failed")
-
