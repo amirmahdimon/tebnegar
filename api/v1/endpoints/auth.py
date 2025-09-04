@@ -19,7 +19,7 @@ from repository import user as user_repo
 from repository import session as session_repo
 from schema.user import UserCreate
 
-router = APIRouter(tags=["auth"])
+router = APIRouter()
 
 # ---- OAuth / OIDC constants ----
 GOOGLE_SCOPES = [
