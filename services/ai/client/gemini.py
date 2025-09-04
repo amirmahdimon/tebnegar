@@ -4,14 +4,15 @@ from google.generativeai.generative_models import ChatSession
 from config import SETTINGS  # Assuming your settings are in config.settings
 from services.ai.base import AIProvider
 
+
 class GeminiClient(AIProvider):
     def __init__(self, system_instruction: str):
         """
         Initializes the Gemini client with a system instruction that defines its behavior.
         """
-        genai.configure(api_key=SETTINGS.GEMINI_API_KEY,transport="rest") # type: ignore
-        
-        self.model = genai.GenerativeModel("gemini-2.5-pro",system_instruction=system_instruction) # type: ignore
+        genai.configure(api_key=SETTINGS.GEMINI_API_KEY, transport="rest")  # type: ignore
+
+        self.model = genai.GenerativeModel(SETTINGS.GEMINI_MODEL, system_instruction=system_instruction)  # type: ignore
 
     def start_session(self) -> ChatSession:
         """
