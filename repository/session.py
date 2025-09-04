@@ -67,6 +67,28 @@ class CRUDSession(CRUDBase[SessionModel, SessionCreate, Dict[str, Any]]): # type
         return new_session, new_conversation
 
 
+    def associate_session_with_user(self, db: Session, *, session_id: str, user_id: str) -> Session | None:
+        """
+        Finds an anonymous session by its ID and links it to a user account.
+        """
+        # We need to handle both str and UUID versions of the session_id
+        try:
+            session_uuid = uuid.UUID(session_id)
+        except ValueError:
+            # If the session_id is not a valid UUID, it can't exist in the DB.
+            return None
+
+        db_session = self.get(db, id=session_uuid)
+
+        # Only associate if the session exists and is currently anonymous
+        if db_session and db_session.user_id is None:
+            db_session.user_id = user_id # type: ignore
+            db.add(db_session)
+            db.commit()
+            db.refresh(db_session)
+        
+        return db_session
+
     def end_session(self, db: Session, *, session_id: uuid.UUID) -> Optional[SessionModel]:
         """
         Marks a session as ended by setting the ended_at timestamp.
