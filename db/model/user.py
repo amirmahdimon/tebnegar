@@ -1,5 +1,6 @@
 import uuid
 from sqlalchemy import Column, String, DateTime, func
+from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from db.base import Base
 
@@ -13,3 +14,6 @@ class User(Base):
     picture_url = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+
+    sessions = relationship("Session", back_populates="user")
