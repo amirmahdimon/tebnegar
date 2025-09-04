@@ -7,4 +7,4 @@ class ResponseFeedbackCreate(BaseModel):
     comment: Optional[str] = Field(None, max_length=2000)
 
 class ResponseFeedbackResponse(BaseModel):
-    message: str = "Feedback received. Thank you!"
+    message: str
