@@ -66,6 +66,47 @@ class CRUDSession(CRUDBase[SessionModel, SessionCreate, Dict[str, Any]]): # type
         
         return new_session, new_conversation
 
+    def get_or_create_active_session_for_user(
+        self, db: Session, *, user_id: uuid.UUID
+    ) -> SessionModel:
+        """
+        Retrieves the most recent session for a user, or creates a new one if none exist.
+
+        This is the primary method for getting a session for an authenticated user.
+
+        Args:
+            db: The database session.
+            user_id: The ID of the currently authenticated user.
+
+        Returns:
+            The active (most recent) or newly created Session object.
+        """
+        # 1. Try to find the user's most recent session by ordering by creation date.
+        session = (
+            db.query(self.model)
+            .filter(self.model.user_id == user_id)
+            .order_by(self.model.created_at.desc())
+            .first()
+        )
+
+        if session:
+            # If a session was found, return it.
+            return session
+        
+        # 2. If no session is found, create a new one for this user.
+        #    This handles the "cold start" case for a newly logged-in user.
+        print(f"No active session found for user_id {user_id}. Creating a new one.")
+        
+        # We don't have ip_address or user_agent here, which is perfectly acceptable
+        # as this session is initiated by an authenticated, server-side action.
+        new_session = self.model(user_id=user_id)
+        
+        db.add(new_session)
+        db.commit()
+        db.refresh(new_session) # Refresh to get the DB-generated ID and created_at
+        
+        return new_session
+
 
     def associate_session_with_user(self, db: Session, *, session_id: str, user_id: str) -> Session | None:
         """

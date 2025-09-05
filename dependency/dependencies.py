@@ -9,6 +9,7 @@ from db.session import get_db
 from config.settings import SETTINGS
 from db.model.user import User
 from repository.user import user as user_repository
+from pydantic import BaseModel, ValidationError
 
 api_key_header = APIKeyHeader(name="X-API-KEY", auto_error=False)
 
@@ -25,34 +26,43 @@ async def get_admin_api_key(api_key: str = Security(api_key_header)):
 
 http_bearer = HTTPBearer(auto_error=False)
 
-def get_current_user(credentials: HTTPAuthorizationCredentials = Security(http_bearer),db: Session = Depends(get_db)) -> User:
+# Pydantic schema for validating the token's payload
+class TokenPayload(BaseModel):
+    id: int
+    email: str
+
+# Reusable security scheme
+http_bearer = HTTPBearer()
+
+def get_current_user_optional(
+    credentials: HTTPAuthorizationCredentials | None = Security(http_bearer),
+    db: Session = Depends(get_db)
+) -> User | None:
     """
-    Validates JWT from Authorization: Bearer <token>
+    If a valid JWT is provided, return the user. Otherwise, return None.
+    This allows endpoints to work for both anonymous and authenticated users.
     """
     if not credentials:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authorization token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        # No 'Authorization' header was found. This is an anonymous user.
+        return None
     
     token = credentials.credentials
     try:
-        payload = jwt.decode(token, SETTINGS.SECRET_KEY, algorithms=[SETTINGS.ALGORITHM])
+        payload = jwt.decode(
+            token, SETTINGS.SECRET_KEY, algorithms=[SETTINGS.ALGORITHM]
+        )
+        token_data = TokenPayload(id=payload.get("sub").get("id"),email=payload.get("sub").get("email"))  # type: ignore
     except (JWTError, ValidationError):
+        # A token was provided, but it's invalid. This is an error.
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
+            detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    sub = payload.get("sub")
-    if (not sub) or (not isinstance(sub,dict)) or not sub.get("id"):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid JWT Token")
-
-    user_id = sub["id"]
-    user = user_repository.get(db, id=user_id)
+    user = user_repository.get(db, id=token_data.id)
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # The token is valid, but the user doesn't exist. This is also an error.
+        raise HTTPException(status_code=401, detail="User not found for token")
     
     return user
