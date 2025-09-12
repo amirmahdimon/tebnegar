@@ -16,9 +16,10 @@ import jwt
 from dependency.dependencies import get_db
 from config.settings import SETTINGS
 from repository import user as user_repo
+from repository import session as session_repo
 from schema.user import UserCreate
 
-router = APIRouter(tags=["auth"])
+router = APIRouter()
 
 # ---- OAuth / OIDC constants ----
 GOOGLE_SCOPES = [
@@ -50,7 +51,7 @@ def _build_flow(redirect_uri: Optional[str] = None) -> Flow:
     )
 
 
-def _create_jwt_token(*, subject: str, expires_in_minutes: int | None = None) -> str:
+def _create_jwt_token(*, subject: dict, expires_in_minutes: int | None = None) -> str:
     now = datetime.now(timezone.utc)
     exp = now + \
         timedelta(
@@ -132,8 +133,8 @@ def google_callback(
         raise HTTPException(
             status_code=400, detail="Invalid or expired state parameter")
 
-    flow = _build_flow()
     try:
+        flow = _build_flow()
         flow.fetch_token(code=code)
         creds = flow.credentials
 
@@ -150,6 +151,7 @@ def google_callback(
 
         print(email)
         print(full_name)
+        print(picture_url)
 
         # Upsert user
         user = user_repo.user.get_by_email(db, email=email)
@@ -164,7 +166,12 @@ def google_callback(
                 ),
             )
 
-        access_token = _create_jwt_token(subject=str(user.email))
+        session_repo.associate_session_with_user(db=db, session_id=session_id, user_id=str(user.id))
+
+        access_token = _create_jwt_token(subject={
+            "id": str(user.id),
+            "email": user.email
+        })
 
         resp = {
             "jwt_token": access_token,

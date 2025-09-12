@@ -1,8 +1,10 @@
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     DATABASE_URL: str
     GEMINI_API_KEY: str
+    GEMINI_MODEL: str
     ADMIN_API_KEY: str
     HTTP_PROXY: str | None = None
     HTTPS_PROXY: str | None = None
@@ -22,4 +24,4 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-SETTINGS = Settings() # type: ignore
+SETTINGS = Settings()  # type: ignore

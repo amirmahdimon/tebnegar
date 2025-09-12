@@ -17,9 +17,18 @@ class ConversationCreate(BaseModel):
     """
     Schema for creating a new conversation.
     Only the session_id is required from the client.
+    Only the client SHOULD fill this if they're not logged in and anonymous.
+    Otherwise they should leave it empty and just send the JWT token in the header of their request.
     """
-    session_id: uuid.UUID
+    session_id: uuid.UUID | None = None
 
+
+class ConversationCreateInternal(BaseModel):
+    """
+    Schema for creating a new conversation for use in code, not APIs.
+    """
+    session_id: uuid.UUID | None = None
+    user_id: uuid.UUID | None = None
 
 class ConversationUpdate(BaseModel):
     """
